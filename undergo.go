@@ -53,3 +53,10 @@ func Read(path string) (string, error) {
 		}
 	}
 }
+
+func Write(path, content string) {
+	err := ioutil.WriteFile(path, []byte(content), os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
+}
