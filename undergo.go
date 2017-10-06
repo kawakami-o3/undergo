@@ -7,6 +7,12 @@ import (
 	"regexp"
 )
 
+func U(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+
 func ReplaceAll(target, regex, replace string) string {
 	return regexp.MustCompile(regex).ReplaceAllString(target, replace)
 }
