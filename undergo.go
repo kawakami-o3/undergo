@@ -1,9 +1,16 @@
 package u
 
 import (
+	"time"
 	"bufio"
+	"bytes"
+	"errors"
 	"io"
 	"io/ioutil"
+	"mime/multipart"
+	"net/http"
+	"net/http/cookiejar"
+	"net/url"
 	"os"
 	"regexp"
 )
@@ -61,9 +68,85 @@ func Read(path string) (string, error) {
 	}
 }
 
-func Write(path, content string) {
-	err := ioutil.WriteFile(path, []byte(content), os.ModePerm)
-	if err != nil {
-		panic(err)
+func Write(path, content string) error {
+	return ioutil.WriteFile(path, []byte(content), os.ModePerm)
+}
+
+type HttpClient struct { http.Client }
+
+var defaultClient = func() *HttpClient {
+	jar, _ := cookiejar.New(nil)
+
+	return &HttpClient{http.Client{
+		Jar: jar,
+		Timeout: time.Duration(10) * time.Second,
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			return errors.New("redirect")
+		},
+	}}
+}()
+
+type HttpRequest struct {
+	values url.Values
+	files map[string]string
+}
+
+func (req *HttpRequest) Add(key, value string) {
+	req.values.Add(key, value)
+}
+
+func (req *HttpRequest) AddFile(key, fileName string) {
+	req.files[key] = fileName
+}
+
+func Post(url string, req *HttpRequest) (string, error) {
+	return defaultClient.Post(url, req)
+}
+
+func (c *HttpClient) Post(url string, req *HttpRequest) (string, error) {
+	var resp *http.Response
+	var err error
+	if len(req.files) == 0 {
+		resp, err = c.PostForm(url, req.values)
+	} else {
+		bodyBuf := &bytes.Buffer{}
+		bodyWriter := multipart.NewWriter(bodyBuf)
+
+		for key, fileName := range req.files {
+			fileWriter, err := bodyWriter.CreateFormFile(key, fileName)
+			if err != nil {
+				return "", err
+			}
+
+			fh, err := os.Open(fileName)
+			if err != nil {
+				return "", err
+			}
+			defer fh.Close()
+
+			_, err = io.Copy(fileWriter, fh)
+			if err != nil {
+				return "", err
+			}
+		}
+
+		for key := range req.values {
+			bodyWriter.WriteField(key, req.values.Get(key))
+		}
+
+		contentType := bodyWriter.FormDataContentType()
+		bodyWriter.Close()
+
+		resp, err = c.Client.Post(url, contentType, bodyBuf)
 	}
+
+	if err != nil {
+		return "", err
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+	return string(body), nil
 }
