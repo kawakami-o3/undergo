@@ -1,7 +1,6 @@
 package u
 
 import (
-	"time"
 	"bufio"
 	"bytes"
 	"errors"
@@ -13,6 +12,7 @@ import (
 	"net/url"
 	"os"
 	"regexp"
+	"time"
 )
 
 func U(err error) {
@@ -72,13 +72,13 @@ func Write(path, content string) error {
 	return ioutil.WriteFile(path, []byte(content), os.ModePerm)
 }
 
-type HttpClient struct { http.Client }
+type HttpClient struct{ http.Client }
 
 var defaultClient = func() *HttpClient {
 	jar, _ := cookiejar.New(nil)
 
 	return &HttpClient{http.Client{
-		Jar: jar,
+		Jar:     jar,
 		Timeout: time.Duration(10) * time.Second,
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			return errors.New("redirect")
@@ -88,7 +88,7 @@ var defaultClient = func() *HttpClient {
 
 type HttpRequest struct {
 	values url.Values
-	files map[string]string
+	files  map[string]string
 }
 
 func (req *HttpRequest) Add(key, value string) {
