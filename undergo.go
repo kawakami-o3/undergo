@@ -13,6 +13,8 @@ import (
 	"os"
 	"regexp"
 	"time"
+
+	"github.com/tealeg/xlsx"
 )
 
 func U(err error) {
@@ -150,3 +152,26 @@ func (c *HttpClient) Post(url string, req *HttpRequest) (string, error) {
 	}
 	return string(body), nil
 }
+
+func FindSheet(file *xlsx.File, name string) (*xlsx.Sheet, error) {
+	for _, sheet := range file.Sheets {
+		if sheet.Name == name {
+			return sheet, nil
+		}
+	}
+	return nil, errors.New("sheet not found")
+}
+
+
+func StringList(cells []*xlsx.Cell) ([]string, error) {
+	ret := []string{}
+	for _, cell := range cells {
+		s, err := cell.String()
+		if err != nil {
+			return nil, err
+		}
+		ret = append(ret, s)
+	}
+	return ret, nil
+}
+
