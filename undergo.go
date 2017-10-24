@@ -23,6 +23,10 @@ func U(err error) {
 	}
 }
 
+func P(bytes []byte) {
+	fmt.Println(string(bytes))
+}
+
 func ReplaceAll(target, regex, replace string) string {
 	return regexp.MustCompile(regex).ReplaceAllString(target, replace)
 }
