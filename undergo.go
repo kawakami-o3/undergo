@@ -1,6 +1,7 @@
 package u
 
 import (
+	"fmt"
 	"bufio"
 	"bytes"
 	"errors"
@@ -170,10 +171,13 @@ func FindSheet(file *xlsx.File, name string) (*xlsx.Sheet, error) {
 func StringList(cells []*xlsx.Cell) ([]string, error) {
 	ret := []string{}
 	for _, cell := range cells {
+		s := cell.String()
+		/*
 		s, err := cell.String()
 		if err != nil {
 			return nil, err
 		}
+		*/
 		ret = append(ret, s)
 	}
 	return ret, nil
