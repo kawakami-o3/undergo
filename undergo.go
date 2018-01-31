@@ -183,3 +183,8 @@ func StringList(cells []*xlsx.Cell) ([]string, error) {
 	return ret, nil
 }
 
+// Exists https://qiita.com/suin/items/b9c0f92851454dc6d461
+func Exists(filename string) bool {
+    _, err := os.Stat(filename)
+    return err == nil
+}
