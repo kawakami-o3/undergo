@@ -183,3 +183,15 @@ func StringList(cells []*xlsx.Cell) ([]string, error) {
 	return ret, nil
 }
 
+func s2(i int) string {
+	return fmt.Sprintf("%b", i)
+}
+
+func s8(i int) string {
+	return fmt.Sprintf("%o", i)
+}
+
+func s16(i int) string {
+	return fmt.Sprintf("%x", i)
+}
+
