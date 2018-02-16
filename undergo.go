@@ -189,15 +189,15 @@ func Exists(filename string) bool {
     return err == nil
 }
 
-func s2(i int) string {
+func S2(i int) string {
 	return fmt.Sprintf("%b", i)
 }
 
-func s8(i int) string {
+func S8(i int) string {
 	return fmt.Sprintf("%o", i)
 }
 
-func s16(i int) string {
+func S16(i int) string {
 	return fmt.Sprintf("%x", i)
 }
 
