@@ -1,10 +1,10 @@
 package u
 
 import (
-	"fmt"
 	"bufio"
 	"bytes"
 	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"mime/multipart"
@@ -52,6 +52,16 @@ func Include(arr []int, value int) bool {
 		}
 	}
 	return false
+}
+
+func ReadBytes(path string) ([]byte, error) {
+	file, err := os.Open(path)
+	defer file.Close()
+	if err != nil {
+		return nil, err
+	}
+
+	return ioutil.ReadAll(file)
 }
 
 func Read(path string) (string, error) {
@@ -167,16 +177,15 @@ func FindSheet(file *xlsx.File, name string) (*xlsx.Sheet, error) {
 	return nil, errors.New("sheet not found")
 }
 
-
 func StringList(cells []*xlsx.Cell) ([]string, error) {
 	ret := []string{}
 	for _, cell := range cells {
 		s := cell.String()
 		/*
-		s, err := cell.String()
-		if err != nil {
-			return nil, err
-		}
+			s, err := cell.String()
+			if err != nil {
+				return nil, err
+			}
 		*/
 		ret = append(ret, s)
 	}
@@ -185,8 +194,8 @@ func StringList(cells []*xlsx.Cell) ([]string, error) {
 
 // Exists https://qiita.com/suin/items/b9c0f92851454dc6d461
 func Exists(filename string) bool {
-    _, err := os.Stat(filename)
-    return err == nil
+	_, err := os.Stat(filename)
+	return err == nil
 }
 
 func S2(i int) string {
@@ -200,4 +209,3 @@ func S8(i int) string {
 func S16(i int) string {
 	return fmt.Sprintf("%x", i)
 }
-
