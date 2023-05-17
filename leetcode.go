@@ -47,8 +47,8 @@ func maxNext(s string) int {
 
 func Ints2d(s string) [][]int {
 	ints2d := [][]int{}
-	maxNest := maxNest(s)
-	if maxNest == 1 || maxNest == 2 {
+	maxNext := maxNext(s)
+	if maxNext == 1 || maxNext == 2 {
 		return insts2d // invalid structure
 	}
 
