@@ -7,9 +7,13 @@ import (
 )
 
 func Ints(s string) []int {
-	delimiter := ','
-	s += string(delimiter)
+	// s = '[1,2,3,...]'
 	ints := []int{}
+	if len(s) < 2 {
+		return ints
+	}
+	delimiter := ','
+	s = s[1:len(s)-1] + string(delimiter)
 	var digits strings.Builder
 	for _, c := range s {
 		if unicode.IsDigit(c) {
@@ -46,10 +50,11 @@ func maxNext(s string) int {
 }
 
 func Ints2d(s string) [][]int {
+	// s = '[[1,2,3], [4,5,6], ....]'
 	ints2d := [][]int{}
 	maxNext := maxNext(s)
 	if maxNext == 1 || maxNext == 2 {
-		return insts2d // invalid structure
+		return ints2d // invalid structure
 	}
 
 	ints := []int{}
