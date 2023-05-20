@@ -79,9 +79,11 @@ func Ints2d(s string) [][]int {
 			ints = []int{}
 		case ']':
 			nest--
-			i, _ := strconv.Atoi(digits.String())
-			ints = append(ints, i)
-			digits.Reset()
+			if digits.Len() > 0 {
+				i, _ := strconv.Atoi(digits.String())
+				ints = append(ints, i)
+				digits.Reset()
+			}
 			ints2d = append(ints2d, ints)
 		}
 	}

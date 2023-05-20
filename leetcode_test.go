@@ -15,5 +15,6 @@ func TestInts(t *testing.T) {
 func TestInts2d(t *testing.T) {
 
 	assert.EqualValues(t, [][]int{[]int{1, 2}, []int{3}}, Ints2d("[[1, 2], [3]]"), "")
+	assert.EqualValues(t, [][]int{[]int{}, []int{}}, Ints2d("[[], []]"), "")
 
 }
