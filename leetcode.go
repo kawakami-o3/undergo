@@ -52,11 +52,11 @@ func maxNext(s string) int {
 func Ints2d(s string) [][]int {
 	// s = '[[1,2,3], [4,5,6], ....]'
 	ints2d := [][]int{}
-	maxNext := maxNext(s)
-	if maxNext == 1 || maxNext == 2 {
-		return ints2d // invalid structure
+	if len(s) < 2 {
+		return ints2d
 	}
 
+	s = s[1 : len(s)-1]
 	ints := []int{}
 	var digits strings.Builder
 	nest := 0
@@ -68,13 +68,21 @@ func Ints2d(s string) [][]int {
 
 		switch c {
 		case ',':
+			if nest == 0 {
+				continue
+			}
 			i, _ := strconv.Atoi(digits.String())
 			ints = append(ints, i)
 			digits.Reset()
 		case '[':
 			nest++
+			ints = []int{}
 		case ']':
 			nest--
+			i, _ := strconv.Atoi(digits.String())
+			ints = append(ints, i)
+			digits.Reset()
+			ints2d = append(ints2d, ints)
 		}
 	}
 
