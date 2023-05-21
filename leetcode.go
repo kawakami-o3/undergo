@@ -32,23 +32,6 @@ func Ints(s string) []int {
 	return ints
 }
 
-func maxNext(s string) int {
-	i := 0
-	nest := 0
-	for _, c := range s {
-		switch c {
-		case '[':
-			i++
-		case ']':
-			i--
-		}
-		if nest < i {
-			nest = i
-		}
-	}
-	return nest
-}
-
 func Ints2d(s string) [][]int {
 	// s = '[[1,2,3], [4,5,6], ....]'
 	ints2d := [][]int{}
