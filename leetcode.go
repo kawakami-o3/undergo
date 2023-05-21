@@ -8,9 +8,9 @@ import (
 
 func Ints(s string) []int {
 	// s = '[1,2,3,...]'
-	ints := []int{}
+	slice := []int{}
 	if len(s) < 2 {
-		return ints
+		return slice
 	}
 	delimiter := ','
 	s = s[1:len(s)-1] + string(delimiter)
@@ -26,21 +26,21 @@ func Ints(s string) []int {
 		}
 
 		i, _ := strconv.Atoi(digits.String())
-		ints = append(ints, i)
+		slice = append(slice, i)
 		digits.Reset()
 	}
-	return ints
+	return slice
 }
 
 func Ints2d(s string) [][]int {
 	// s = '[[1,2,3], [4,5,6], ....]'
-	ints2d := [][]int{}
+	slice2d := [][]int{}
 	if len(s) < 2 {
-		return ints2d
+		return slice2d
 	}
 
 	s = s[1 : len(s)-1]
-	ints := []int{}
+	slice := []int{}
 	var digits strings.Builder
 	nest := 0
 	for _, c := range s {
@@ -55,21 +55,21 @@ func Ints2d(s string) [][]int {
 				continue
 			}
 			i, _ := strconv.Atoi(digits.String())
-			ints = append(ints, i)
+			slice = append(slice, i)
 			digits.Reset()
 		case '[':
 			nest++
-			ints = []int{}
+			slice = []int{}
 		case ']':
 			nest--
 			if digits.Len() > 0 {
 				i, _ := strconv.Atoi(digits.String())
-				ints = append(ints, i)
+				slice = append(slice, i)
 				digits.Reset()
 			}
-			ints2d = append(ints2d, ints)
+			slice2d = append(slice2d, slice)
 		}
 	}
 
-	return ints2d
+	return slice2d
 }
