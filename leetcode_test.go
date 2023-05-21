@@ -22,3 +22,11 @@ func TestFloats(t *testing.T) {
 func TestFloats2d(t *testing.T) {
 	assert.EqualValues(t, [][]float64{{1.0, 2.0}, {3.0}}, Floats2d("[[1.0, 2], [3.00]]"), "")
 }
+
+func TestStrings(t *testing.T) {
+	assert.EqualValues(t, []string{"a", "bb", "ccc"}, Strings(`["a", "bb", "ccc"]`), "")
+}
+
+func TestStrings2d(t *testing.T) {
+	assert.EqualValues(t, [][]string{{"a", "bb"}, {"ccc"}}, Strings2d(`[["a", "bb"], ["ccc"]]`), "")
+}

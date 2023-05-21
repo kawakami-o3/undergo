@@ -75,7 +75,6 @@ func Ints2d(s string) [][]int {
 }
 
 func Floats(s string) []float64 {
-	// s = '[1,2,3,...]'
 	slice := []float64{}
 	if len(s) < 2 {
 		return slice
@@ -99,7 +98,6 @@ func Floats(s string) []float64 {
 }
 
 func Floats2d(s string) [][]float64 {
-	// s = '[[1,2,3], [4,5,6], ....]'
 	slice2d := [][]float64{}
 	if len(s) < 2 {
 		return slice2d
@@ -133,6 +131,66 @@ func Floats2d(s string) [][]float64 {
 			slice2d = append(slice2d, slice)
 		default:
 			digits.WriteRune(c)
+		}
+	}
+
+	return slice2d
+}
+
+func Strings(s string) []string {
+	slice := []string{}
+	if len(s) < 2 {
+		return slice
+	}
+	s = s[1:len(s)-1] + string(',')
+	var buf strings.Builder
+	for _, c := range s {
+
+		switch c {
+		case ' ', '"':
+			continue
+		case ',':
+			slice = append(slice, buf.String())
+			buf.Reset()
+		default:
+			buf.WriteRune(c)
+		}
+	}
+	return slice
+}
+
+func Strings2d(s string) [][]string {
+	slice2d := [][]string{}
+	if len(s) < 2 {
+		return slice2d
+	}
+
+	s = s[1 : len(s)-1]
+	slice := []string{}
+	var buf strings.Builder
+	nest := 0
+	for _, c := range s {
+		switch c {
+		case ' ', '"':
+			continue
+		case ',':
+			if nest == 0 {
+				continue
+			}
+			slice = append(slice, buf.String())
+			buf.Reset()
+		case '[':
+			nest++
+			slice = []string{}
+		case ']':
+			nest--
+			if buf.Len() > 0 {
+				slice = append(slice, buf.String())
+				buf.Reset()
+			}
+			slice2d = append(slice2d, slice)
+		default:
+			buf.WriteRune(c)
 		}
 	}
 
