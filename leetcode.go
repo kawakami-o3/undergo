@@ -16,7 +16,7 @@ func Ints(s string) []int {
 	s = s[1:len(s)-1] + string(delimiter)
 	var digits strings.Builder
 	for _, c := range s {
-		if unicode.IsDigit(c) {
+		if unicode.IsDigit(c) || c == '-' {
 			digits.WriteRune(c)
 			continue
 		}
@@ -44,7 +44,7 @@ func Ints2d(s string) [][]int {
 	var digits strings.Builder
 	nest := 0
 	for _, c := range s {
-		if unicode.IsDigit(c) {
+		if unicode.IsDigit(c) || c == '-' {
 			digits.WriteRune(c)
 			continue
 		}
