@@ -196,3 +196,21 @@ func Strings2d(s string) [][]string {
 
 	return slice2d
 }
+
+func Chars(s string) []byte {
+	// s = `["a","b","c",...]`
+	slice := []byte{}
+	if len(s) < 2 {
+		return slice
+	}
+	reader := strings.NewReader(s)
+	for reader.Len() > 0 {
+		b, _ := reader.ReadByte()
+		if b == '\'' || b == '"' {
+			c, _ := reader.ReadByte()
+			slice = append(slice, byte(c))
+			reader.ReadByte()
+		}
+	}
+	return slice
+}

@@ -34,3 +34,7 @@ func TestStrings(t *testing.T) {
 func TestStrings2d(t *testing.T) {
 	assert.EqualValues(t, [][]string{{"a", "bb"}, {"ccc"}}, Strings2d(`[["a", "bb"], ["ccc"]]`), "")
 }
+
+func TestChars(t *testing.T) {
+	assert.EqualValues(t, []byte{'c', 'f', 'j'}, Chars(`["c", "f", "j"]`), "")
+}
